@@ -5,6 +5,7 @@
  * templates file into workflow-focused modules.
  */
 import type { SkillTemplate, CommandTemplate } from '../types.js';
+import { NEW_ARTIFACT_LANGUAGE_GUIDANCE } from './artifact-language.js';
 
 export function getOpsxProposeSkillTemplate(): SkillTemplate {
   return {
@@ -22,6 +23,8 @@ When ready to implement, run /opsx:apply
 ---
 
 **Input**: The user's request should include a change name (kebab-case) OR a description of what they want to build.
+
+${NEW_ARTIFACT_LANGUAGE_GUIDANCE}
 
 **Steps**
 
@@ -133,6 +136,8 @@ When ready to implement, run /opsx:apply
 ---
 
 **Input**: The argument after \`/opsx:propose\` is the change name (kebab-case), OR a description of what the user wants to build.
+
+${NEW_ARTIFACT_LANGUAGE_GUIDANCE}
 
 **Steps**
 
