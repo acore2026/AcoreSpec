@@ -5,6 +5,7 @@
  * templates file into workflow-focused modules.
  */
 import type { SkillTemplate, CommandTemplate } from '../types.js';
+import { NEW_ARTIFACT_LANGUAGE_GUIDANCE } from './artifact-language.js';
 
 export function getNewChangeSkillTemplate(): SkillTemplate {
   return {
@@ -13,6 +14,8 @@ export function getNewChangeSkillTemplate(): SkillTemplate {
     instructions: `Start a new change using the experimental artifact-driven approach.
 
 **Input**: The user's request should include a change name (kebab-case) OR a description of what they want to build.
+
+${NEW_ARTIFACT_LANGUAGE_GUIDANCE}
 
 **Steps**
 
@@ -88,6 +91,8 @@ export function getOpsxNewCommandTemplate(): CommandTemplate {
     content: `Start a new change using the experimental artifact-driven approach.
 
 **Input**: The argument after \`/opsx:new\` is the change name (kebab-case), OR a description of what the user wants to build.
+
+${NEW_ARTIFACT_LANGUAGE_GUIDANCE}
 
 **Steps**
 

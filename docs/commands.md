@@ -220,6 +220,26 @@ AI:  Change: add-dark-mode
 - Multiple artifacts may become ready simultaneously
 - You can edit created artifacts before continuing
 
+#### Artifact language
+
+OPSX artifact creation follows the user's working language for human-facing prose. If the change request is primarily Chinese, generated `proposal.md`, `design.md`, `tasks.md`, and spec prose should be Chinese. If the request is primarily English, generated artifact prose should be English.
+
+When continuing an existing change, the language already used in completed artifacts takes precedence over the language of the latest command text. Code identifiers, command names, package names, file paths, API names, and proper nouns should stay exactly as written.
+
+Spec files must keep canonical OpenSpec structural markers in English until parser/schema alias support exists. Chinese prose belongs inside those markers:
+
+```md
+## ADDED Requirements
+
+### Requirement: 中文需求标题
+系统 SHALL 在用户使用中文描述变更时生成中文说明文本。
+
+#### Scenario: 生成中文规格说明
+- **WHEN** 用户用中文描述一个新功能
+- **THEN** 生成的需求说明和场景说明使用中文
+- **AND** 保留 `## ADDED Requirements`、`### Requirement:` 和 `#### Scenario:` 等结构标记
+```
+
 ---
 
 ### `/opsx:ff`
