@@ -1,0 +1,1 @@
+{"version":3,"file":"link-input.d.ts","sourceRoot":"","sources":["../../../src/core/workspace/link-input.ts"],"names":[],"mappings":"AAKA,MAAM,WAAW,wBAAwB;IACvC,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,SAAS,EAAE,MAAM,CAAC;CACnB;AAED,MAAM,WAAW,8BAA8B;IAC7C,GAAG,CAAC,EAAE,MAAM,CAAC;CACd;AAkBD,wBAAsB,4BAA4B,CAChD,KAAK,EAAE,MAAM,EACb,OAAO,GAAE,8BAAmC,GAC3C,OAAO,CAAC,wBAAwB,CAAC,CAiBnC"}

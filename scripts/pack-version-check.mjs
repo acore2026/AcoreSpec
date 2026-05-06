@@ -6,9 +6,9 @@
 //   consistently supported and returns the tarball metadata we need. The
 //   project uses pnpm for install/publish, but this guard only needs to pack
 //   locally and verify the installed CLI output.
-// - `npm pack` triggers the package's `prepare` script (build), and
-//   `changeset publish` triggers `prepublishOnly` (also builds here). This
-//   means an explicit build is not strictly necessary for the guard.
+// - `npm pack` triggers the package's `prepare` script. For GitHub installs
+//   that script may reuse committed dist output, while `changeset publish`
+//   triggers `prepublishOnly` to rebuild before registry publication.
 
 import { execFileSync } from 'child_process';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs';
@@ -53,7 +53,7 @@ function main() {
   let tgzPath;
 
   try {
-    log(`Packing @fission-ai/openspec@${expected}...`);
+    log(`Packing @acore2026/openspec@${expected}...`);
     const filename = npmPack();
     tgzPath = path.resolve(filename);
     log(`Created: ${tgzPath}`);
@@ -80,7 +80,7 @@ function main() {
     run('npm', ['install', tgzPath, '--silent', '--no-audit', '--no-fund'], { cwd: work, env });
 
     // Run the installed CLI via Node to avoid bin resolution/platform issues
-    const binRel = path.join('node_modules', '@fission-ai', 'openspec', 'bin', 'openspec.js');
+    const binRel = path.join('node_modules', '@acore2026', 'openspec', 'bin', 'openspec.js');
     const actual = run(process.execPath, [binRel, '--version'], { cwd: work }).trim();
 
     if (actual !== expected) {
