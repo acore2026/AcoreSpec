@@ -158,8 +158,8 @@ openspec update [path] [options]
 **Example:**
 
 ```bash
-# Update instruction files after npm upgrade
-npm update @fission-ai/openspec
+# Update instruction files after upgrading the fork
+npm install -g https://github.com/acore2026/AcoreSpec/archive/refs/heads/main.tar.gz
 openspec update
 ```
 
@@ -846,7 +846,7 @@ openspec schema which spec-driven
 
 ```
 spec-driven resolves from: package
-  Source: /usr/local/lib/node_modules/@fission-ai/openspec/schemas/spec-driven
+  Source: /usr/local/lib/node_modules/@acore2026/openspec/schemas/spec-driven
 ```
 
 **Schema precedence:**
