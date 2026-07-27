@@ -1,0 +1,171 @@
+name: prototype-driven
+version: 1
+description: 6G prototype workflow - brief → inventory → scenario → contracts → design → runbook → acceptance → tasks
+artifacts:
+  - id: brief
+    generates: brief.md
+    description: Demo objective, audience, scope, and visible proof point
+    template: brief.md
+    instruction: |
+      Define the prototype before discussing implementation.
+
+      State:
+      - who will watch or use the prototype
+      - the one outcome they must be able to see
+      - the network capability being demonstrated
+      - in-scope software, environments, and physical devices
+      - what will remain mocked and what must be real
+      - constraints such as venue, network access, time, privacy, and safety
+
+      Use plain, concrete language. Do not claim a 6G benefit without naming the
+      observable behavior or measurement that demonstrates it.
+    requires: []
+
+  - id: inventory
+    generates: inventory.md
+    description: Repositories, versions, runtimes, devices, dependencies, and readiness
+    template: inventory.md
+    instruction: |
+      Inventory every participant needed for the prototype.
+
+      For each software repository record its role, ownership class
+      (team-built, substantially modified, or upstream dependency), branch or
+      tag, commit when frozen, runtime location, start/stop/health commands,
+      configuration source, required artifacts, and fallback.
+
+      For each environment or device record OS/firmware, access method,
+      network attachment, power/safety constraints, health check, operator, and
+      replacement or mock path.
+
+      Never copy secrets or .env values. Record only the variable name or secret
+      source. Keep Windows PowerShell/cmd and Unix shell commands explicitly
+      labeled; do not present one platform's path syntax as portable.
+    requires:
+      - brief
+
+  - id: scenario
+    generates: scenario.md
+    description: End-to-end demo flow, state transitions, failure branches, and reset
+    template: scenario.md
+    instruction: |
+      Describe the demo as an end-to-end, observable sequence.
+
+      Begin with preconditions and initial state. For every step record the
+      actor, trigger, network or device hop, expected response/state change,
+      audience-visible result, correlation field or other evidence, timeout,
+      and recovery checkpoint.
+
+      Include a complete happy path, at least one realistic failure path, reset
+      behavior, and the final cleanup state. Distinguish mock behavior from real
+      network or device behavior.
+    requires:
+      - brief
+      - inventory
+
+  - id: contracts
+    generates: "contracts/**/*.md"
+    description: Versioned cross-repository and device interface contracts
+    template: contract.md
+    instruction: |
+      Create one contract file per owned integration boundary described in the
+      scenario. Use explicit, stable file names.
+
+      Each contract must identify producer and consumer, protocol and version,
+      address/configuration discovery, request correlation, message or API
+      shape, state transitions, timeout/retry/idempotency behavior, errors,
+      compatibility policy, observability, security, and a contract-test plan.
+
+      Cover HTTP, WebSocket, gRPC, SCTP, QUIC, MoQ, message buses, files, and
+      device SDK calls as applicable. Link upstream standards instead of
+      restating them; document the team's profile, extension, or assumption.
+    requires:
+      - inventory
+      - scenario
+
+  - id: design
+    generates: design.md
+    description: Integration architecture, deployment topology, and technical decisions
+    template: design.md
+    instruction: |
+      Explain how the inventoried parts implement the scenario and contracts.
+
+      Include component and deployment topology, control/user/media/data paths,
+      configuration flow, state ownership, mock-to-real replacement points,
+      observability, performance budget, security boundaries, rollout, and
+      rollback. Record alternatives for consequential decisions.
+
+      Pay special attention to multi-host addressing, NAT/firewalls, GPU/model
+      assets, Android/AR packaging, remote device access, protocol version
+      compatibility, and clock synchronization when they affect evidence.
+    requires:
+      - scenario
+      - contracts
+
+  - id: runbook
+    generates: runbook.md
+    description: Repeatable preflight, start, health, reset, stop, and rollback procedure
+    template: runbook.md
+    instruction: |
+      Write an operator runbook using commands that already exist in the
+      inventoried repositories or are explicitly introduced by tasks.
+
+      Include frozen versions, configuration preparation, preflight checks,
+      dependency-ordered startup, health gates, demo trigger, reset, stop,
+      cleanup, rollback, log locations, and known failure signatures.
+
+      Every command must name its host, working directory, OS/shell, expected
+      output, timeout, and safe retry rule. Physical-device steps must include
+      the safety area, emergency stop or manual takeover, and an operator.
+      Missing commands are gaps to resolve, not invitations to invent commands.
+    requires:
+      - inventory
+      - design
+
+  - id: acceptance
+    generates: acceptance.md
+    description: Measurable acceptance matrix and evidence collection plan
+    template: acceptance.md
+    instruction: |
+      Define the evidence required before a live demo.
+
+      Cover audience-visible outcome, functional flow, cross-component
+      contracts, latency/throughput/loss or other relevant performance,
+      stability across repeated runs, resource usage, recovery/reset, data
+      handling, and physical-device safety.
+
+      Each check must have a stable ID, setup, procedure, pass threshold,
+      evidence type and project-relative destination, responsible operator, and
+      status vocabulary PASS/FAIL/BLOCKED. State the number of required
+      consecutive successful rehearsals and what invalidates previous evidence.
+    requires:
+      - scenario
+      - runbook
+
+  - id: tasks
+    generates: tasks.md
+    description: Repository-scoped implementation and integration checklist
+    template: tasks.md
+    instruction: |
+      Break the work into dependency-ordered, verifiable tasks.
+
+      Group tasks by repository or operational concern. Every task must use
+      checkbox syntax and name its target repository/component, expected change,
+      focused validation, and artifact or contract it satisfies.
+
+      Include tasks for contract tests, mock-to-real integration, cross-platform
+      paths where applicable, runbook commands, telemetry/evidence, recovery,
+      physical-device safety, documentation, and a clean rehearsal.
+    requires:
+      - design
+      - runbook
+      - acceptance
+
+apply:
+  requires: [tasks]
+  tracks: tasks.md
+  instruction: |
+    Read every context artifact. Implement repository-scoped tasks without
+    overwriting unrelated work. Keep contracts, runbook, and acceptance aligned
+    with discoveries. A software task is not complete until its focused check
+    passes; integration and device tasks may be marked complete only with
+    referenced evidence.

@@ -18,7 +18,14 @@ OpenSpec helps you and your AI coding assistant agree on what to build before an
 /opsx:new ──► /opsx:ff or /opsx:continue ──► /opsx:apply ──► /opsx:verify ──► /opsx:archive
 ```
 
+**6G prototype path:**
+
+```text
+/opsx:survey ──► /opsx:apply ──► /opsx:integrate ──► /opsx:rehearse ──► /opsx:demo ──► /opsx:archive
+```
+
 The default global profile is `core`, which includes `propose`, `explore`, `apply`, `sync`, and `archive`. You can enable the expanded workflow commands with `openspec config profile` and then `openspec update`.
+For multi-repository or device-backed demos, use `openspec config profile prototype` and the [6G Prototype Workflow](prototype-workflow.md).
 
 ## What OpenSpec Creates
 

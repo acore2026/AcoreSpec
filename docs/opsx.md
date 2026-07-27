@@ -626,6 +626,7 @@ artifacts:
 Schemas define what artifacts exist and their dependencies. Currently available:
 
 - **spec-driven** (default): proposal → specs → design → tasks
+- **prototype-driven**: brief → inventory → scenario → contracts → design → runbook → acceptance → tasks
 
 ```bash
 # List available schemas
@@ -647,6 +648,7 @@ openspec schema validate my-workflow
 ## Tips
 
 - Use `/opsx:explore` to think through an idea before committing to a change
+- Use the `prototype` profile for `/opsx:survey`, `/opsx:integrate`, `/opsx:rehearse`, and `/opsx:demo`
 - `/opsx:ff` when you know what you want, `/opsx:continue` when exploring
 - During `/opsx:apply`, if something's wrong — fix the artifact, then continue
 - Tasks track progress via checkboxes in `tasks.md`

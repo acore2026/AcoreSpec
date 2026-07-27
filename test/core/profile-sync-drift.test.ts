@@ -6,7 +6,7 @@ import {
   hasProjectConfigDrift,
   WORKFLOW_TO_SKILL_DIR,
 } from '../../src/core/profile-sync-drift.js';
-import { CORE_WORKFLOWS } from '../../src/core/profiles.js';
+import { CORE_WORKFLOWS, PROTOTYPE_WORKFLOWS } from '../../src/core/profiles.js';
 import { CommandAdapterRegistry } from '../../src/core/command-generation/index.js';
 
 function writeSkill(projectDir: string, workflowId: string): void {
@@ -88,5 +88,15 @@ describe('profile sync drift detection', () => {
 
     const hasDrift = hasProjectConfigDrift(tempDir, CORE_WORKFLOWS, 'both');
     expect(hasDrift).toBe(true);
+  });
+
+  it('returns false when project files match prototype profile and delivery', () => {
+    for (const workflow of PROTOTYPE_WORKFLOWS) {
+      writeSkill(tempDir, workflow);
+      writeCommand(tempDir, workflow);
+    }
+
+    const hasDrift = hasProjectConfigDrift(tempDir, PROTOTYPE_WORKFLOWS, 'both');
+    expect(hasDrift).toBe(false);
   });
 });

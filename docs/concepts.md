@@ -583,6 +583,18 @@ proposal → specs → design → tasks → implement
 
 Best for: Most feature work where you want to agree on specs before implementation.
 
+**prototype-driven**
+
+The AcoreSpec workflow for core-network, transport, UI, runtime, and device work that must be integrated and demonstrated together:
+
+```text
+brief → inventory → scenario → contracts → design → runbook → acceptance → tasks
+```
+
+Best for: multi-repository 6G prototypes, Android/AR or robot endpoints, transport experiments, and any demo that needs a frozen release, repeatable reset, measurable evidence, and a live recovery path.
+
+See [6G Prototype Workflow](prototype-workflow.md).
+
 ### Custom Schemas
 
 Create custom schemas for your team's workflow:

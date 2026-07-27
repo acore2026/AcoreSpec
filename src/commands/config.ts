@@ -19,7 +19,12 @@ import {
   validateConfig,
   DEFAULT_CONFIG,
 } from '../core/config-schema.js';
-import { CORE_WORKFLOWS, ALL_WORKFLOWS, getProfileWorkflows } from '../core/profiles.js';
+import {
+  CORE_WORKFLOWS,
+  PROTOTYPE_WORKFLOWS,
+  ALL_WORKFLOWS,
+  getProfileWorkflows,
+} from '../core/profiles.js';
 import { OPENSPEC_DIR_NAME } from '../core/config.js';
 import { hasProjectConfigDrift } from '../core/profile-sync-drift.js';
 
@@ -86,6 +91,22 @@ const WORKFLOW_PROMPT_META: Record<string, WorkflowPromptMeta> = {
     name: 'Onboard',
     description: 'Guided onboarding flow for OpenSpec',
   },
+  survey: {
+    name: 'Survey prototype',
+    description: 'Inspect repositories, environments, devices, and readiness',
+  },
+  integrate: {
+    name: 'Integrate prototype',
+    description: 'Build and verify cross-repository prototype boundaries',
+  },
+  rehearse: {
+    name: 'Rehearse prototype',
+    description: 'Run acceptance checks and collect evidence before a demo',
+  },
+  demo: {
+    name: 'Operate live demo',
+    description: 'Run a rehearsed release with safety and recovery gates',
+  },
 };
 
 function isPromptCancellationError(error: unknown): boolean {
@@ -114,7 +135,12 @@ export function deriveProfileFromWorkflowSelection(selectedWorkflows: string[]):
   const isCoreMatch =
     selectedWorkflows.length === CORE_WORKFLOWS.length &&
     CORE_WORKFLOWS.every((w) => selectedWorkflows.includes(w));
-  return isCoreMatch ? 'core' : 'custom';
+  if (isCoreMatch) return 'core';
+
+  const isPrototypeMatch =
+    selectedWorkflows.length === PROTOTYPE_WORKFLOWS.length &&
+    PROTOTYPE_WORKFLOWS.every((w) => selectedWorkflows.includes(w));
+  return isPrototypeMatch ? 'prototype' : 'custom';
 }
 
 /**
@@ -259,6 +285,8 @@ export function registerConfigCommand(program: Command): void {
         console.log(`  delivery: ${config.delivery} ${deliverySource}`);
         if (config.profile === 'core') {
           console.log(`  workflows: ${CORE_WORKFLOWS.join(', ')} (from core profile)`);
+        } else if (config.profile === 'prototype') {
+          console.log(`  workflows: ${PROTOTYPE_WORKFLOWS.join(', ')} (from prototype profile)`);
         } else if (config.workflows && config.workflows.length > 0) {
           console.log(`  workflows: ${config.workflows.join(', ')} (explicit)`);
         } else {
@@ -465,15 +493,28 @@ export function registerConfigCommand(program: Command): void {
         return;
       }
 
+      if (preset === 'prototype') {
+        const config = getGlobalConfig();
+        config.profile = 'prototype';
+        config.workflows = [...PROTOTYPE_WORKFLOWS];
+        saveGlobalConfig(config);
+        console.log('Config updated. Run `openspec update` in your projects to apply.');
+        return;
+      }
+
       if (preset) {
-        console.error(`Error: Unknown profile preset "${preset}". Available presets: core`);
+        console.error(
+          `Error: Unknown profile preset "${preset}". Available presets: core, prototype`
+        );
         process.exitCode = 1;
         return;
       }
 
       // Non-interactive check
       if (!process.stdout.isTTY) {
-        console.error('Interactive mode required. Use `openspec config profile core` or set config via environment/flags.');
+        console.error(
+          'Interactive mode required. Use `openspec config profile core`, `openspec config profile prototype`, or set config via environment/flags.'
+        );
         process.exitCode = 1;
         return;
       }

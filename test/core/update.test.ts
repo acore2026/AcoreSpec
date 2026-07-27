@@ -243,7 +243,17 @@ Old instructions content
       }
 
       // Verify non-core commands are NOT created
-      const nonCoreCommandIds = ['new', 'continue', 'ff', 'bulk-archive', 'verify'];
+      const nonCoreCommandIds = [
+        'survey',
+        'new',
+        'continue',
+        'ff',
+        'integrate',
+        'rehearse',
+        'demo',
+        'bulk-archive',
+        'verify',
+      ];
       for (const cmdId of nonCoreCommandIds) {
         const cmdFile = path.join(commandsDir, `${cmdId}.md`);
         const exists = await FileSystemUtils.fileExists(cmdFile);

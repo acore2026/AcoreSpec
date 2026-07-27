@@ -27,11 +27,31 @@ For workflow patterns and when to use each command, see [Workflows](workflows.md
 | `/opsx:bulk-archive` | Archive multiple changes at once |
 | `/opsx:onboard` | Guided tutorial through the complete workflow |
 
-The default global profile is `core`. To enable expanded workflow commands, run `openspec config profile`, select workflows, then run `openspec update` in your project.
+### 6G Prototype Path (`prototype` profile)
+
+| Command | Purpose |
+|---------|---------|
+| `/opsx:survey` | Check repository, environment, device, and frozen-version readiness |
+| `/opsx:integrate` | Build and verify the cross-repository path against contracts and runbook |
+| `/opsx:rehearse` | Run the complete demo without an audience and collect acceptance evidence |
+| `/opsx:demo` | Operate a rehearsed release with live safety and recovery gates |
+
+Enable these actions with `openspec config profile prototype`, then run `openspec update` in the project. Use the `prototype-driven` schema when creating the change. See [6G Prototype Workflow](prototype-workflow.md).
+
+The default global profile remains `core`. To enable other expanded commands, run `openspec config profile`, select workflows, then run `openspec update` in your project.
 
 ---
 
 ## Command Reference
+
+### Prototype command behavior
+
+- `/opsx:survey` is read-only by default. It classifies observed state as `MATCH`, `DRIFT`, `MISSING`, or `BLOCKED` and never prints secret values.
+- `/opsx:integrate` snapshots branch, commit, artifact version, and dirty state before using existing build, health, contract-test, reset, and stop commands.
+- `/opsx:rehearse` evaluates every acceptance ID as `PASS`, `FAIL`, or `BLOCKED`; physical-device safety is a mandatory gate.
+- `/opsx:demo` requires successful rehearsal evidence and a matching frozen version. It does not edit code or improvise commands in live mode.
+
+All four commands accept an optional change name and load artifacts through `openspec instructions apply`.
 
 ### `/opsx:propose`
 

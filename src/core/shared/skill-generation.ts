@@ -27,6 +27,14 @@ import {
   getOpsxVerifyCommandTemplate,
   getOpsxOnboardCommandTemplate,
   getOpsxProposeCommandTemplate,
+  getSurveySkillTemplate,
+  getOpsxSurveyCommandTemplate,
+  getIntegrateSkillTemplate,
+  getOpsxIntegrateCommandTemplate,
+  getRehearseSkillTemplate,
+  getOpsxRehearseCommandTemplate,
+  getDemoSkillTemplate,
+  getOpsxDemoCommandTemplate,
   type SkillTemplate,
 } from '../templates/skill-templates.js';
 import type { CommandContent } from '../command-generation/index.js';
@@ -66,12 +74,18 @@ export function getSkillTemplates(workflowFilter?: readonly string[]): SkillTemp
     { template: getVerifyChangeSkillTemplate(), dirName: 'openspec-verify-change', workflowId: 'verify' },
     { template: getOnboardSkillTemplate(), dirName: 'openspec-onboard', workflowId: 'onboard' },
     { template: getOpsxProposeSkillTemplate(), dirName: 'openspec-propose', workflowId: 'propose' },
+    { template: getSurveySkillTemplate(), dirName: 'openspec-survey', workflowId: 'survey' },
+    { template: getIntegrateSkillTemplate(), dirName: 'openspec-integrate', workflowId: 'integrate' },
+    { template: getRehearseSkillTemplate(), dirName: 'openspec-rehearse', workflowId: 'rehearse' },
+    { template: getDemoSkillTemplate(), dirName: 'openspec-demo', workflowId: 'demo' },
   ];
 
   if (!workflowFilter) return all;
 
-  const filterSet = new Set(workflowFilter);
-  return all.filter(entry => filterSet.has(entry.workflowId));
+  const byWorkflow = new Map(all.map((entry) => [entry.workflowId, entry]));
+  return workflowFilter
+    .map((workflowId) => byWorkflow.get(workflowId))
+    .filter((entry): entry is SkillTemplateEntry => entry !== undefined);
 }
 
 /**
@@ -92,12 +106,18 @@ export function getCommandTemplates(workflowFilter?: readonly string[]): Command
     { template: getOpsxVerifyCommandTemplate(), id: 'verify' },
     { template: getOpsxOnboardCommandTemplate(), id: 'onboard' },
     { template: getOpsxProposeCommandTemplate(), id: 'propose' },
+    { template: getOpsxSurveyCommandTemplate(), id: 'survey' },
+    { template: getOpsxIntegrateCommandTemplate(), id: 'integrate' },
+    { template: getOpsxRehearseCommandTemplate(), id: 'rehearse' },
+    { template: getOpsxDemoCommandTemplate(), id: 'demo' },
   ];
 
   if (!workflowFilter) return all;
 
-  const filterSet = new Set(workflowFilter);
-  return all.filter(entry => filterSet.has(entry.id));
+  const byId = new Map(all.map((entry) => [entry.id, entry]));
+  return workflowFilter
+    .map((workflowId) => byId.get(workflowId))
+    .filter((entry): entry is CommandTemplateEntry => entry !== undefined);
 }
 
 /**

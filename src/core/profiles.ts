@@ -14,15 +14,34 @@ import type { Profile } from './global-config.js';
 export const CORE_WORKFLOWS = ['propose', 'explore', 'apply', 'sync', 'archive'] as const;
 
 /**
+ * Workflows for multi-repository, multi-device prototype delivery.
+ */
+export const PROTOTYPE_WORKFLOWS = [
+  'propose',
+  'explore',
+  'survey',
+  'apply',
+  'integrate',
+  'rehearse',
+  'demo',
+  'sync',
+  'archive',
+] as const;
+
+/**
  * All available workflows in the system.
  */
 export const ALL_WORKFLOWS = [
   'propose',
   'explore',
+  'survey',
   'new',
   'continue',
   'apply',
   'ff',
+  'integrate',
+  'rehearse',
+  'demo',
   'sync',
   'archive',
   'bulk-archive',
@@ -32,6 +51,7 @@ export const ALL_WORKFLOWS = [
 
 export type WorkflowId = (typeof ALL_WORKFLOWS)[number];
 export type CoreWorkflowId = (typeof CORE_WORKFLOWS)[number];
+export type PrototypeWorkflowId = (typeof PROTOTYPE_WORKFLOWS)[number];
 
 /**
  * Resolves which workflows should be active for a given profile configuration.
@@ -45,6 +65,9 @@ export function getProfileWorkflows(
 ): readonly string[] {
   if (profile === 'custom') {
     return customWorkflows ?? [];
+  }
+  if (profile === 'prototype') {
+    return PROTOTYPE_WORKFLOWS;
   }
   return CORE_WORKFLOWS;
 }

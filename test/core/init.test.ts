@@ -548,6 +548,27 @@ describe('InitCommand - profile and detection features', () => {
     );
   });
 
+  it('should generate prototype actions with --profile prototype', async () => {
+    const initCommand = new InitCommand({
+      tools: 'claude',
+      force: true,
+      profile: 'prototype',
+    });
+
+    await initCommand.execute(testDir);
+
+    for (const action of ['survey', 'integrate', 'rehearse', 'demo']) {
+      const skillFile = path.join(testDir, '.claude', 'skills', `openspec-${action}`, 'SKILL.md');
+      const commandFile = path.join(testDir, '.claude', 'commands', 'opsx', `${action}.md`);
+      expect(await fileExists(skillFile)).toBe(true);
+      expect(await fileExists(commandFile)).toBe(true);
+    }
+
+    expect(
+      await fileExists(path.join(testDir, '.claude', 'skills', 'openspec-new-change', 'SKILL.md')),
+    ).toBe(false);
+  });
+
   it('should use detected tools in non-interactive mode when no --tools flag', async () => {
     // Create a .claude directory to simulate detected tool
     await fs.mkdir(path.join(testDir, '.claude'), { recursive: true });

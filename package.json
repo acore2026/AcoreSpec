@@ -1,13 +1,17 @@
 {
   "name": "@acore2026/openspec",
   "version": "1.3.1",
-  "description": "AI-native system for spec-driven development",
+  "description": "Spec-driven development for multi-repository 6G prototype delivery",
   "keywords": [
     "openspec",
     "specs",
     "cli",
     "ai",
-    "development"
+    "development",
+    "6g",
+    "prototype",
+    "integration",
+    "rehearsal"
   ],
   "homepage": "https://github.com/acore2026/AcoreSpec",
   "repository": {
@@ -15,7 +19,7 @@
     "url": "git+https://github.com/acore2026/AcoreSpec.git"
   },
   "license": "MIT",
-  "author": "OpenSpec Contributors",
+  "author": "ACore2026",
   "type": "module",
   "publishConfig": {
     "access": "public"

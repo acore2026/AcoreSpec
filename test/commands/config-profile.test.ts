@@ -71,6 +71,12 @@ describe('deriveProfileFromWorkflowSelection', () => {
     const { deriveProfileFromWorkflowSelection } = await import('../../src/commands/config.js');
     expect(deriveProfileFromWorkflowSelection(['archive', 'sync', 'apply', 'explore', 'propose'])).toBe('core');
   });
+
+  it('returns prototype when selection has exactly prototype workflows', async () => {
+    const { deriveProfileFromWorkflowSelection } = await import('../../src/commands/config.js');
+    const { PROTOTYPE_WORKFLOWS } = await import('../../src/core/profiles.js');
+    expect(deriveProfileFromWorkflowSelection([...PROTOTYPE_WORKFLOWS].reverse())).toBe('prototype');
+  });
 });
 
 describe('config profile interactive flow', () => {
@@ -378,6 +384,24 @@ describe('config profile interactive flow', () => {
     expect(config.profile).toBe('core');
     expect(config.delivery).toBe('skills');
     expect(config.workflows).toEqual(['propose', 'explore', 'apply', 'sync', 'archive']);
+    expect(select).not.toHaveBeenCalled();
+    expect(checkbox).not.toHaveBeenCalled();
+    expect(confirm).not.toHaveBeenCalled();
+  });
+
+  it('prototype preset should preserve delivery and select prototype workflows', async () => {
+    const { saveGlobalConfig, getGlobalConfig } = await import('../../src/core/global-config.js');
+    const { PROTOTYPE_WORKFLOWS } = await import('../../src/core/profiles.js');
+    const { select, checkbox, confirm } = await getPromptMocks();
+
+    saveGlobalConfig({ featureFlags: {}, profile: 'core', delivery: 'commands' });
+
+    await runConfigCommand(['profile', 'prototype']);
+
+    const config = getGlobalConfig();
+    expect(config.profile).toBe('prototype');
+    expect(config.delivery).toBe('commands');
+    expect(config.workflows).toEqual(PROTOTYPE_WORKFLOWS);
     expect(select).not.toHaveBeenCalled();
     expect(checkbox).not.toHaveBeenCalled();
     expect(confirm).not.toHaveBeenCalled();

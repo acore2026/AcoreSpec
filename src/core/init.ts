@@ -72,6 +72,10 @@ const WORKFLOW_TO_SKILL_DIR: Record<string, string> = {
   'verify': 'openspec-verify-change',
   'onboard': 'openspec-onboard',
   'propose': 'openspec-propose',
+  'survey': 'openspec-survey',
+  'integrate': 'openspec-integrate',
+  'rehearse': 'openspec-rehearse',
+  'demo': 'openspec-demo',
 };
 
 // -----------------------------------------------------------------------------
@@ -182,11 +186,17 @@ export class InitCommand {
       return undefined;
     }
 
-    if (this.profileOverride === 'core' || this.profileOverride === 'custom') {
+    if (
+      this.profileOverride === 'core' ||
+      this.profileOverride === 'prototype' ||
+      this.profileOverride === 'custom'
+    ) {
       return this.profileOverride;
     }
 
-    throw new Error(`Invalid profile "${this.profileOverride}". Available profiles: core, custom`);
+    throw new Error(
+      `Invalid profile "${this.profileOverride}". Available profiles: core, prototype, custom`
+    );
   }
 
   // ═══════════════════════════════════════════════════════════

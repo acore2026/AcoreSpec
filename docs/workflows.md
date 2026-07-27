@@ -436,10 +436,14 @@ For full command details and options, see [Commands](commands.md).
 |---------|---------|-------------|
 | `/opsx:propose` | Create change + planning artifacts | Fast default path (`core` profile) |
 | `/opsx:explore` | Think through ideas | Unclear requirements, investigation |
+| `/opsx:survey` | Audit prototype readiness | Before integration or after version drift |
 | `/opsx:new` | Start a change scaffold | Expanded mode, explicit artifact control |
 | `/opsx:continue` | Create next artifact | Expanded mode, step-by-step artifact creation |
 | `/opsx:ff` | Create all planning artifacts | Expanded mode, clear scope |
 | `/opsx:apply` | Implement tasks | Ready to write code |
+| `/opsx:integrate` | Verify cross-repository boundaries | Components work alone; end-to-end path is next |
+| `/opsx:rehearse` | Run acceptance and collect evidence | Before an audience is present |
+| `/opsx:demo` | Operate a frozen live release | Rehearsal passed and recovery is ready |
 | `/opsx:verify` | Validate implementation | Expanded mode, before archiving |
 | `/opsx:sync` | Merge delta specs | Expanded mode, optional |
 | `/opsx:archive` | Complete the change | All work finished |
@@ -450,3 +454,4 @@ For full command details and options, see [Commands](commands.md).
 - [Commands](commands.md) - Full command reference with options
 - [Concepts](concepts.md) - Deep dive into specs, artifacts, and schemas
 - [Customization](customization.md) - Create custom workflows
+- [6G Prototype Workflow](prototype-workflow.md) - Cross-repository, device, rehearsal, and live-demo workflow

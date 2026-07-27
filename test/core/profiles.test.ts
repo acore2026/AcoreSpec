@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import {
   CORE_WORKFLOWS,
+  PROTOTYPE_WORKFLOWS,
   ALL_WORKFLOWS,
   getProfileWorkflows,
 } from '../../src/core/profiles.js';
@@ -19,15 +20,38 @@ describe('profiles', () => {
     });
   });
 
+  describe('PROTOTYPE_WORKFLOWS', () => {
+    it('should contain the prototype delivery actions in operating order', () => {
+      expect(PROTOTYPE_WORKFLOWS).toEqual([
+        'propose',
+        'explore',
+        'survey',
+        'apply',
+        'integrate',
+        'rehearse',
+        'demo',
+        'sync',
+        'archive',
+      ]);
+    });
+
+    it('should be a subset of ALL_WORKFLOWS', () => {
+      for (const workflow of PROTOTYPE_WORKFLOWS) {
+        expect(ALL_WORKFLOWS).toContain(workflow);
+      }
+    });
+  });
+
   describe('ALL_WORKFLOWS', () => {
-    it('should contain all 11 workflows', () => {
-      expect(ALL_WORKFLOWS).toHaveLength(11);
+    it('should contain all 15 workflows', () => {
+      expect(ALL_WORKFLOWS).toHaveLength(15);
     });
 
     it('should contain expected workflow IDs', () => {
       const expected = [
-        'propose', 'explore', 'new', 'continue', 'apply',
-        'ff', 'sync', 'archive', 'bulk-archive', 'verify', 'onboard',
+        'propose', 'explore', 'survey', 'new', 'continue', 'apply',
+        'ff', 'integrate', 'rehearse', 'demo', 'sync', 'archive',
+        'bulk-archive', 'verify', 'onboard',
       ];
       expect([...ALL_WORKFLOWS]).toEqual(expected);
     });
@@ -42,6 +66,11 @@ describe('profiles', () => {
     it('should return core workflows for core profile even if customWorkflows provided', () => {
       const result = getProfileWorkflows('core', ['new', 'apply']);
       expect(result).toEqual(CORE_WORKFLOWS);
+    });
+
+    it('should return prototype workflows for prototype profile', () => {
+      const result = getProfileWorkflows('prototype');
+      expect(result).toEqual(PROTOTYPE_WORKFLOWS);
     });
 
     it('should return custom workflows for custom profile', () => {

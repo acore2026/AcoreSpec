@@ -91,9 +91,10 @@ openspec init [path] [options]
 |--------|-------------|
 | `--tools <list>` | Configure AI tools non-interactively. Use `all`, `none`, or comma-separated list |
 | `--force` | Auto-cleanup legacy files without prompting |
-| `--profile <profile>` | Override global profile for this init run (`core` or `custom`) |
+| `--profile <profile>` | Override global profile for this init run (`core`, `prototype`, or `custom`) |
 
 `--profile custom` uses whatever workflows are currently selected in global config (`openspec config profile`).
+`--profile prototype` installs `survey`, `integrate`, `rehearse`, and `demo` together with the standard actions used for prototype delivery.
 
 **Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `opencode`, `pi`, `qoder`, `lingma`, `qwen`, `roocode`, `trae`, `windsurf`
 
@@ -114,6 +115,9 @@ openspec init --tools all
 
 # Override profile for this run
 openspec init --profile core
+
+# Configure a prototype project
+openspec init --profile prototype
 
 # Skip prompts and auto-cleanup legacy files
 openspec init --force
@@ -912,6 +916,9 @@ openspec config profile
 
 # Fast preset: switch workflows to core (keeps delivery mode)
 openspec config profile core
+
+# Prototype preset: install survey, integration, rehearsal, and demo actions
+openspec config profile prototype
 ```
 
 `openspec config profile` starts with a current-state summary, then lets you choose:
